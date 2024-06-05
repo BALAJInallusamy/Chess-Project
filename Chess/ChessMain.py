@@ -1,6 +1,7 @@
 """
 	This is our main driver file. It will be responsible for handling user input and displaying the current GameState object
 """
+import os
 import pygame as p 
 import ChessEngine
 
@@ -14,9 +15,10 @@ IMAGES = {}
 	Initialize a global dictionary of images. This will be called exactly once in the main
 """
 def loadImages():
-	pieces=["wp","wR","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
+	pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
 	for piece in pieces:
-		IMAGES[piece] = p.transform.scale(p.image.load("images/"+piece+".png"), (SQ_SIZE, SQ_SIZE))
+		s="images/"+piece+".png"
+		IMAGES[piece] = p.transform.scale(p.image.load(s), (SQ_SIZE, SQ_SIZE))
 #Note: we can access an image by saying 'IMAGES
 ''' 
 	The main driver for our code. This will handle user input and updating the graphics
@@ -28,8 +30,8 @@ def main():
 	screen.fill(p.Color("white"))
 	gs = ChessEngine.GameState()
 	loadImages() #only do this once, before the while loop
-	runnning = True
-	while runnning:
+	running = True
+	while running:
 		for e in p.event.get():
 			if e.type == p.QUIT:
 				runnning = False
