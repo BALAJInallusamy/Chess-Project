@@ -1,7 +1,7 @@
 """
 	This is our main driver file. It will be responsible for handling user input and displaying the current GameState object
 """
-import os
+#import os
 import pygame as p 
 import ChessEngine
 
@@ -17,7 +17,7 @@ IMAGES = {}
 def loadImages():
 	pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
 	for piece in pieces:
-		s="images/"+piece+".png"
+		s="Chess/images/"+piece+".png"
 		IMAGES[piece] = p.transform.scale(p.image.load(s), (SQ_SIZE, SQ_SIZE))
 #Note: we can access an image by saying 'IMAGES
 ''' 
@@ -31,11 +31,30 @@ def main():
 	gs = ChessEngine.GameState()
 	loadImages() #only do this once, before the while loop
 	running = True
+	sqSelected = () #no square is selected, keep track of the last click of the user (tuple: (row, col))
+	playerClicks = [] #keep track of player clicks (two tuples: [(6, 4), (4, 4)]) moving pwan 2 steps.
 	while running:
 		for e in p.event.get():
 			if e.type == p.QUIT:
 				runnning = False
-
+			#this is for moving the chess pieces.(by clicking the mouse)
+			elif e.type == p.MOUSEBUTTONDOWN:
+					location = p.mouse.get_pos() #(x, y) location of mouse
+					col = location[0]//SQ_SIZE
+					row = location[1]//SQ_SIZE
+					if sqSelected == (row, col): #the user clicked the same square twice
+							sqSelected = () #deselect
+							playerClicks = [] #clear player clicks
+					else:
+							sqSelected= (row, col)
+							playerClicks.append(sqSelected) #append for both 1st and 2nd clicks
+					if len(playerClicks) == 2: #after 2nd click
+							move = ChessEngine.Move (playerClicks[0], playerClicks [1], gs.board)
+							print(move.getChessNotation())
+							gs.makeMove(move)
+							sqSelected = () #reset user clicks
+							playerClicks = []
+		drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		p.display.flip()
 
@@ -71,5 +90,8 @@ def drawPieces(screen,board):
 				screen.blit(IMAGES[piece], p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
-if __name__=="__main__":
+if __name__== "__main__":
 	main()
+
+
+
