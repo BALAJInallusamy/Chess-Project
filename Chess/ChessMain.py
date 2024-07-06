@@ -21,7 +21,7 @@ def loadImages():
 
   pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
   for piece in pieces:
-    s = "images/" + piece + ".png"
+    s = "chess" + "/" + "images/" + piece + ".png"
     IMAGES[ piece ] = p.transform.scale( p.image.load(s), ( SQ_SIZE, SQ_SIZE ) )
 
 #Note: we can access an image by saying 'IMAGES
@@ -74,9 +74,11 @@ def main():
                   gs.makeMove( move )
                   moveMade=True
 
-              sqSelected = ()                      #reset user clicks
-              playerClicks = []
-     
+                  sqSelected = ()                      #reset user clicks
+                  playerClicks = []
+              else:
+                  playerClicks = [sqSelected]
+
       # key handler
       elif e.type == p.KEYDOWN:                    
             if e.key == p.K_z:                     # undo when 'z' is pressed		                   
@@ -84,7 +86,7 @@ def main():
                 moveMade = True
      
       if moveMade:
-         validMoves=gs.getValidMoves()
+         ValidMoves=gs.getValidMoves()
          moveMade=False
 
     drawGameState( screen, gs )
@@ -125,6 +127,5 @@ def drawPieces( screen, board ):
 
 if __name__== "__main__":
   main()
-
 
 
