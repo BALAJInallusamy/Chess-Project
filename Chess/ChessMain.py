@@ -21,7 +21,7 @@ def loadImages():
 
   pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
   for piece in pieces:
-    s = "images/" + piece + ".png"
+    s = "chess" + "/" + "images/" + piece + ".png"
     IMAGES[ piece ] = p.transform.scale( p.image.load(s), ( SQ_SIZE, SQ_SIZE ) )
 
 #Note: we can access an image by saying 'IMAGES
@@ -69,14 +69,14 @@ def main():
 
               move = ChessEngine.Move( playerClicks[0], playerClicks [1], gs.board )
               print( move.getChessNotation() )
-              
-              if move in ValidMoves:
-                  gs.makeMove( move )
-                  moveMade=True
+              for i in range(len(ValidMoves)):
+                if move == ValidMoves[i]:
+                    gs.makeMove( ValidMoves[i] )
+                    moveMade=True
 
-                  sqSelected = ()                      #reset user clicks
-                  playerClicks = []
-              else:
+                    sqSelected = ()                      #reset user clicks
+                    playerClicks = []
+              if not moveMade:
                   playerClicks = [sqSelected]
 
       # key handler
@@ -127,5 +127,4 @@ def drawPieces( screen, board ):
 
 if __name__== "__main__":
   main()
-
 
