@@ -30,6 +30,8 @@ class GameState():
         self.whiteKingLocation=(7, 4)
         self.blackKingLocation=(0, 4)
         self.inCheck = False
+        self.checkmate = False
+        self.stalemate = False
         self.enpassantPossible = () #coordinates for the square where en passant capture is possible
         self.pins = []
         self.checks = []
@@ -118,12 +120,19 @@ class GameState():
                     if moves[i].pieceMoved[1] != 'K':  # Move doesn't move king, so it must block or capture
                         if (moves[i].endRow, moves[i].endCol) not in validSquares:  # Move doesn't block check or capture piece
                             moves.pop(i)  # Use pop to remove element at index i
-
+    
             else:  # Double check, king has to move
                 self.getKingMoves(kingRow, kingCol, moves)
         else:  # Not in check, so all moves are fine
             moves = self.getAllPossibleMoves()
-        
+        if(len(moves) == 0):
+            if self.inCheck:
+                self.checkmate = True
+            else:
+                self.stalemate = True
+        else:
+            self.checkmate = False
+            self.stalemate = False
         return moves
 
 
