@@ -21,7 +21,7 @@ def loadImages():
 
   pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
   for piece in pieces:
-    s =  "chess" + "/" + "images/" + piece + ".png"
+    s =   "images/" + piece + ".png"
     IMAGES[ piece ] = p.transform.scale( p.image.load(s), ( SQ_SIZE, SQ_SIZE ) )
 
 #Note: we can access an image by saying 'IMAGES
@@ -43,7 +43,7 @@ def main():
   running = True
   sqSelected = ()                                 #no square is selected, keep track of the last click of the user (tuple: (row, col))
   playerClicks = []                               #keep track of player clicks (two tuples: [(6, 4), (4, 4)]) moving pwan 2 steps.
-  gamOver = False
+  gameOver = False
   playerOne = True
   playerTwo = False
   while running:
@@ -55,7 +55,7 @@ def main():
       
       #this is for moving the chess pieces.(by clicking the mouse)
       elif e.type == p.MOUSEBUTTONDOWN :
-          if not gamOver and humanTurn:
+          if not gameOver and humanTurn:
               location = p.mouse.get_pos()            #(x, y) location of mouse
               col = location[0] // SQ_SIZE            
               row = location[1] // SQ_SIZE       
@@ -96,8 +96,8 @@ def main():
                 moveMade = False
                 animate = False
       #AI move finder
-      if not gamOver and not humanTurn:
-         AIMove = SmartMoveFinder.findBestMove(ValidMoves)
+      if not gameOver and not humanTurn:
+         AIMove = SmartMoveFinder.findBestMove(gs,ValidMoves)
          if AIMove is None: 
             AIMove = SmartMoveFinder.findRandomMove(ValidMoves)
          gs.makeMove(AIMove)
@@ -113,13 +113,13 @@ def main():
 
     drawGameState( screen, gs, ValidMoves, sqSelected)
     if gs.checkmate:
-       gamOver = True
+       gameOver = True
        if gs.whiteToMove:
           drawText(screen, 'Black wins by checkmate')
        else:
           drawText(screen, 'White wins by checkmate')
     elif gs.stalemate:
-       gamOver = True
+       gameOver = True
        drawText(screen, 'Stalemate')      
     clock.tick( MAX_FPS )
     p.display.flip()
