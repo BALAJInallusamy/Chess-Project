@@ -4,8 +4,8 @@
 #import os
 
 import pygame as p 
-import ChessEngine
-import ChessAI
+import ChessEngine 
+import SmartMoveFinder
 
 WIDTH = HEIGHT = 512 
 DIMENSION = 8                                                                   #dimensions of a chess board are 8x8
@@ -21,7 +21,7 @@ def loadImages():
 
   pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
   for piece in pieces:
-    s = "chess" + "/" + "images/" + piece + ".png"
+    s =  "chess" + "/" + "images/" + piece + ".png"
     IMAGES[ piece ] = p.transform.scale( p.image.load(s), ( SQ_SIZE, SQ_SIZE ) )
 
 #Note: we can access an image by saying 'IMAGES
@@ -97,7 +97,9 @@ def main():
                 animate = False
       #AI move finder
       if not gamOver and not humanTurn:
-         AIMove = ChessAI.findRandomMove(ValidMoves)
+         AIMove = SmartMoveFinder.findBestMove(ValidMoves)
+         if AIMove is None: 
+            AIMove = SmartMoveFinder.findRandomMove(ValidMoves)
          gs.makeMove(AIMove)
          moveMade = True
          animate = True
