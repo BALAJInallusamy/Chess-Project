@@ -77,6 +77,8 @@ class GameState():
             #undo a 2 square pawn advance
             if move.pieceMoved[1] == 'p' and abs(move.startRow-move.endRow) == 2:
                 self.enpassantPossible = ()
+            self.checkmate = False
+            self.stalemate = False
         """
         All moves with considering checks.
         """

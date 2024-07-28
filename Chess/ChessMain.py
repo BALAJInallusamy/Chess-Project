@@ -44,7 +44,7 @@ def main():
   sqSelected = ()                                 #no square is selected, keep track of the last click of the user (tuple: (row, col))
   playerClicks = []                               #keep track of player clicks (two tuples: [(6, 4), (4, 4)]) moving pwan 2 steps.
   gameOver = False
-  playerOne = True
+  playerOne = False
   playerTwo = False
   while running:
     humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
@@ -88,6 +88,7 @@ def main():
                 gs.undoMove()
                 moveMade = True
                 animate = False
+                gameOver=False
             if e.key == p.K_z:                     # reset the enitre game(board) when 'r' is pressed		                   
                 gs = ChessEngine.GameState()
                 ValidMoves = gs.getValidMoves()
@@ -95,9 +96,10 @@ def main():
                 playerClicks = []
                 moveMade = False
                 animate = False
+                gameOver=False
       #AI move finder
       if not gameOver and not humanTurn:
-         AIMove = SmartMoveFinder.findBestMove(gs,ValidMoves)
+         AIMove = SmartMoveFinder.findBestMoveMinMax(gs,ValidMoves)
          if AIMove is None: 
             AIMove = SmartMoveFinder.findRandomMove(ValidMoves)
          gs.makeMove(AIMove)
