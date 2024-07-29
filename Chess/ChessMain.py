@@ -21,7 +21,7 @@ def loadImages():
 
   pieces=["wR","wp","wB","wQ","wK","wN","bp","bR","bB","bQ","bK","bN"]
   for piece in pieces:
-    s =   "images/" + piece + ".png"
+    s =   "chess" + "/" + "images/" + piece + ".png"
     IMAGES[ piece ] = p.transform.scale( p.image.load(s), ( SQ_SIZE, SQ_SIZE ) )
 
 #Note: we can access an image by saying 'IMAGES
@@ -44,7 +44,7 @@ def main():
   sqSelected = ()                                 #no square is selected, keep track of the last click of the user (tuple: (row, col))
   playerClicks = []                               #keep track of player clicks (two tuples: [(6, 4), (4, 4)]) moving pwan 2 steps.
   gameOver = False
-  playerOne = False
+  playerOne = True
   playerTwo = False
   while running:
     humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
@@ -99,7 +99,7 @@ def main():
                 gameOver=False
       #AI move finder
       if not gameOver and not humanTurn:
-         AIMove = SmartMoveFinder.findBestMoveMinMax(gs,ValidMoves)
+         AIMove = SmartMoveFinder.findBestMove(gs,ValidMoves)
          if AIMove is None: 
             AIMove = SmartMoveFinder.findRandomMove(ValidMoves)
          gs.makeMove(AIMove)
